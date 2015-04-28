@@ -4,12 +4,13 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Image processing/GUI C++/Python developer.
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+I develop products related to image processing/segmentation with 
+Python/C++, Qt, numpy, scikit-image, scikit-learn.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[victor.zaguskin@gmail.com](mailto:victor.zaguskin@gmail.com)
