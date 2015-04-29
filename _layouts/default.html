@@ -24,13 +24,15 @@
   <body>
     <div class="wrapper-masthead">
       <div class="container">
-<ul>
-{% for post in posts %}
-    <li class="lang">
-        <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
-    </li>
-{% endfor %}
-</ul>
+       <nav>
+          <ul>
+              {% for post in posts %}
+                   <li class="lang">
+                      <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
+                   </li>
+               {% endfor %}
+          </ul>
+       </nav>
         <header class="masthead clearfix">
           <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a>
 
