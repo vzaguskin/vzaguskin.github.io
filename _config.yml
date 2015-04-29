@@ -72,3 +72,17 @@ exclude:
     - Gemfile.lock
     - LICENSE
     - README.md
+
+defaults:
+  -
+    scope:
+      path: _posts/en
+    values:
+      layout: default
+      lang: en
+  -
+    scope:
+      path: _posts/ru
+    values:
+      layout: default
+      lang: ru
