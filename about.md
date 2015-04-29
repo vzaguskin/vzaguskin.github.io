@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-name: about
+intname: about
 ---
 
 Image processing/GUI C++/Python developer.

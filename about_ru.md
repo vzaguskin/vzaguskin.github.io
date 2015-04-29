@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about_ru/
-name: about
+intname: about
 lang: ru
 ---
 
