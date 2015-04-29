@@ -92,3 +92,10 @@ defaults:
     values:
       layout: default
       lang: ru
+-
+    scope:
+      path: _pages/ru
+    values:
+      layout: default
+      lang: ru
+

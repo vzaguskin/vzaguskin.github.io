@@ -15,6 +15,12 @@
     <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
   </head>
 
+{% if page.path contains '_posts' %}
+{% assign posts=site.posts | where:"name", page.name | sort: 'path' %}
+{% else %}
+{% assign posts=site.pages | where:"name", page.name | sort: 'path' %}
+{% endif %}
+
   <body>
     <div class="wrapper-masthead">
       <div class="container">
@@ -30,15 +36,17 @@
             <a href="{{ site.baseurl }}/">Blog</a>
             <a href="{{ site.baseurl }}/about">About</a>
           </nav>
-        </header>
-{% assign posts=site.posts | where:"name", page.name | sort: 'path' %}
 <ul>
-{% for post in site.posts %}
+{% for post in posts %}
     <li class="lang">
         <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
     </li>
 {% endfor %}
 </ul>
+        </header>
+
+
+
       </div>
     </div>
 
