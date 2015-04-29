@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-permalink: /about/
+permalink: /about_ru/
 name: about
 lang: ru
 ---
