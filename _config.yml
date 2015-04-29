@@ -76,6 +76,12 @@ exclude:
 defaults:
   -
     scope:
+      path: ""
+    values:
+      lang: en
+      layout: default
+  -
+    scope:
       path: _posts/en
     values:
       layout: default
