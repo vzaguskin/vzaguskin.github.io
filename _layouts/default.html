@@ -18,7 +18,7 @@
 {% if page.path contains '_posts' %}
 {% assign posts=site.posts | where:"name", page.name | sort: 'path' %}
 {% else %}
-{% assign posts=site.pages | where:"name", page.name | sort: 'path' %}
+{% assign posts=site.pages %}
 {% endif %}
 
   <body>
@@ -28,7 +28,7 @@
           <ul>
               {% for post in posts %}
                    <li class="lang">
-                      <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
+                      <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }} {{ post.name }}</a>
                    </li>
                {% endfor %}
           </ul>
