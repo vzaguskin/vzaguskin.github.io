@@ -98,3 +98,18 @@ defaults:
     values:
       layout: default
       lang: ru
+t:
+  en:
+    home:
+      name: "Blog"
+      url: "/"
+    about:
+      name: "About"
+      url: "/about/"
+  ru:
+    home:
+      name: "Блог"
+      url: "/ru/"
+    about:
+      name: "Обо мне"
+      url: "/about_ru/"
