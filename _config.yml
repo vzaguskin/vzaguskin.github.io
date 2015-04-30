@@ -114,8 +114,7 @@ t:
       url: "/ru/"
     about:
       title: "Обо мне"
-      url: "/about_ru/"
-	  
+      url: "/about_ru/"  
 rssurl:
-  en: /feed.xml
-  ru: /feed_ru.xml
+  en: "/feed.xml"
+  ru: "/feed_ru.xml"
