@@ -3,7 +3,9 @@
 #
 
 # Name of your site (displayed in the header)
-name: Victor Zaguskin
+name:
+  en: Victor Zaguskin
+  ru: "Виктор Загускин"
 
 # Short bio or description (displayed in the header)
 description: Image processing, computer vision, machine learning and python.
