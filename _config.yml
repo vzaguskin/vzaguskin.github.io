@@ -101,15 +101,15 @@ defaults:
 t:
   en:
     home:
-      name: "Blog"
+      title: "Blog"
       url: "/"
     about:
-      name: "About"
+      title: "About"
       url: "/about/"
   ru:
     home:
-      name: "Блог"
+      title: "Блог"
       url: "/ru/"
     about:
-      name: "Обо мне"
+      title: "Обо мне"
       url: "/about_ru/"
