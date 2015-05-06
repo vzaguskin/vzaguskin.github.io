@@ -2,6 +2,7 @@
 layout: post
 title: AI for roshambo!
 intname: roshambo1
+permalink: roshambo_en
 ---
 ## Implementing RoShamBo AI in python  ##
 
