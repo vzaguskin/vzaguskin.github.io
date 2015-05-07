@@ -1,3 +1,4 @@
+---
 layout: post
 title: Векторизируем график функции(python, skimage)
 intname: chartvec1
