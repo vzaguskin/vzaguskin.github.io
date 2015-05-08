@@ -61,51 +61,51 @@ permalink: fourielines1_ru
 
 ```python
 
-	def removeLines(img, n):
-	    imfft = np.fft.fft2(imggray)
-	    imffts = np.fft.fftshift(imfft)
+def removeLines(img):
+	imfft = np.fft.fft2(imggray)
+	imffts = np.fft.fftshift(imfft)
     
- 		mags = np.abs(imffts)
-    	angles = np.angle(imffts)
+    mags = np.abs(imffts)
+    angles = np.angle(imffts)
     
-    	visual = np.log(mags)
+    visual = np.log(mags)
 
     
-    	visual3 = np.abs(visual.astype(np.int16) - np.mean(visual))
+    visual3 = np.abs(visual.astype(np.int16) - np.mean(visual))
     
-    	ret = houghLines(visual3)
-    	ret = morphology.binary_dilation(ret )
-    	ret = morphology.binary_dilation(ret )
-    	ret = morphology.binary_dilation(ret )
-    	ret = morphology.binary_dilation(ret )
-    	ret = morphology.binary_dilation(ret )
-    	w,h=ret.shape
-    	ret[w/2-3:w/2+3, h/2-3:h/2+3]=False
-    
-    
-    	delta = np.mean(visual[ret]) - np.mean(visual)
+    ret = houghLines(visual3)
+    ret = morphology.binary_dilation(ret )
+    ret = morphology.binary_dilation(ret )
+    ret = morphology.binary_dilation(ret )
+    ret = morphology.binary_dilation(ret )
+    ret = morphology.binary_dilation(ret )
+    w,h=ret.shape
+    ret[w/2-3:w/2+3, h/2-3:h/2+3]=False
     
     
-    	visual_blured = ndimage.gaussian_filter(visual, sigma=5)
+    delta = np.mean(visual[ret]) - np.mean(visual)
+    
+    
+    visual_blured = ndimage.gaussian_filter(visual, sigma=5)
     
     	
     
-    	visual[ret] =visual_blured[ret]
+    visual[ret] =visual_blured[ret]
     
     
-    	newmagsshift = np.exp(visual)
+    newmagsshift = np.exp(visual)
     
-    	newffts = newmagsshift * np.exp(1j*angles)
+    newffts = newmagsshift * np.exp(1j*angles)
     
-    	newfft = np.fft.ifftshift(newffts)
+    newfft = np.fft.ifftshift(newffts)
     
-    	imrev = np.fft.ifft2(newfft)
+    imrev = np.fft.ifft2(newfft)
     
-    	newim2 =  np.abs(imrev).astype(np.uint8)
+    newim2 =  np.abs(imrev).astype(np.uint8)
     
     
-    	newim2 = np.maximum(newim2, img)
+    newim2 = np.maximum(newim2, img)
     
-    	return newim2
+    return newim2
 
 ```
