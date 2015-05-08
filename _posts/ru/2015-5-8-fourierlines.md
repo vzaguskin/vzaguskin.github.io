@@ -22,6 +22,7 @@ permalink: fourielines1_ru
 ![](https://github.com/vzaguskin/sampleprojects/blob/master/written_digits/result_otsu1.jpg?raw=true)
 
 Ну, к коду. Импортируем все, что понадобится:
+
 ```python
 
     import numpy as np
@@ -34,8 +35,9 @@ permalink: fourielines1_ru
 ```
 
 
-
 Вспомогательная функция HoughLines, возвращающая самую яркую линию, проходящую через центр, в виде бинарной маски:
+
+
 ```python
 
     def houghLines(img):
@@ -52,7 +54,10 @@ permalink: fourielines1_ru
 
 ```
 
+
 И основная функция:
+
+
 
 ```python
 
