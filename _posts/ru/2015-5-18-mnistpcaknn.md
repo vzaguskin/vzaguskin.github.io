@@ -38,10 +38,10 @@ def recognizePCA(train, trainlab, test, labels, num=None):
 
     n_components = 20
 
-    print "fitting pca"
+    #fitting pca
     pca = RandomizedPCA(n_components=n_components).fit(train4pca)
 
-    print "fitted pca"
+
 
     xtrain = pca.transform(train4pca)
 
