@@ -1,0 +1,159 @@
+---
+layout: post
+title: Histogram matching(согласование гистограмм) на python
+intname: histmatching1
+permalink: histmatching1_ru
+---
+
+Навеяло [вот этим вопросом](http://stackoverflow.com/questions/30284137/how-to-extract-color-shade-from-a-given-sample-image-to-convert-another-image-us) на стэковерфлоу.
+Вопрошающий интересуется, как сделать цвета картинки похожими на цвета другой картинки. В его примере, вот исходная картинка:
+
+![](https://github.com/vzaguskin/sampleprojects/blob/master/hist_norm/source.jpg?raw=true)
+
+Он хочет взять оттенок из вот этой картинки:
+
+![](https://github.com/vzaguskin/sampleprojects/blob/master/hist_norm/tint_target.jpg?raw=true)
+
+и применить его к исходной.
+
+Предлагаемый алгоритм согласования гистограмм дает на этом примере следующий результат:
+
+до: ![](https://github.com/vzaguskin/sampleprojects/blob/master/hist_norm/source.jpg?raw=true)
+после: ![](https://github.com/vzaguskin/sampleprojects/blob/master/hist_norm/histnormresult.jpg?raw=true)
+
+Применяемый алгоритм [согласования гистограмм](http://en.wikipedia.org/wiki/Histogram_matching) по сути состоит из применения
+алгоритма [нормализации гистограммы](http://en.wikipedia.org/wiki/Histogram_equalization) к обеим картинкам
+после чего можно построить функцию преобразования значения цвета из двух полученных функций преобразования.
+
+За основу возьмем реализацию метода нормализации гистограммы от [Jan Erik Solem](http://www.janeriksolem.net/2009/06/histogram-equalization-with-python-and.html)
+
+
+```python
+   def histeq(im,nbr_bins=256):
+
+   #get image histogram
+   imhist,bins = histogram(im.flatten(),nbr_bins,normed=True)
+   cdf = imhist.cumsum() #cumulative distribution function
+   cdf = 255 * cdf / cdf[-1] #normalize
+
+   #use linear interpolation of cdf to find new pixel values
+   im2 = interp(im.flatten(),bins[:-1],cdf)
+
+   return im2.reshape(im.shape), cdf
+
+
+```
+
+И сделаем из нее функцию согласования, работающую как с одноканальными, так и с многоканальными изображениями:
+
+
+```python
+
+from scipy.misc import imsave, imread
+import numpy as np
+
+imsrc = imread("source.jpg")
+imtint = imread("tint_target.jpg")
+
+nbr_bins=255
+if len(imsrc.shape) < 3:
+    imsrc = imsrc[:,:,np.newaxis]
+    imtint = imtint[:,:,np.newaxis]
+
+imres = imsrc.copy()
+for d in range(imsrc.shape[2]):
+    imhist,bins = np.histogram(imsrc[:,:,d].flatten(),nbr_bins,normed=True)
+    tinthist,bins = np.histogram(imtint[:,:,d].flatten(),nbr_bins,normed=True)
+
+    cdfsrc = imhist.cumsum() #cumulative distribution function
+    cdfsrc = (255 * cdfsrc / cdfsrc[-1]).astype(np.uint8) #normalize
+
+    cdftint = tinthist.cumsum() #cumulative distribution function
+    cdftint = (255 * cdftint / cdftint[-1]).astype(np.uint8) #normalize
+
+
+    im2 = np.interp(imsrc[:,:,d].flatten(),bins[:-1],cdfsrc)
+
+
+
+    im3 = np.interp(im2,cdftint, bins[:-1])
+
+    imres[:,:,d] = im3.reshape((imsrc.shape[0],imsrc.shape[1] ))
+
+try:
+    imsave("histnormresult.jpg", imres)
+except:
+    imsave("histnormresult.jpg", imres.reshape((imsrc.shape[0],imsrc.shape[1] )))
+
+
+```
+
+Найдем вершины и их центры масс:
+
+```python
+
+    label, numvertices = measurements.label(mask2)
+    mc = measurements.center_of_mass(mask2, label, range(1,numvertices+1) )
+
+```
+
+Найдем линии, связывающие вершины между собой с ппомощью алгоритма, напоминающего [линии Хафа](https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%A5%D0%B0%D1%84%D0%B0). Для этого, определим координаты точек, лежащих на каждой линии, соединяющей вершины и посчитаем долю тех, которые имеют значение True в нашей маске. Если две вершины действительно соединены линией, то их доля будет почти стопроцентной.
+
+```python
+
+    arr = range(numvertices)
+
+    connections=[]
+    for i in range( numvertices):
+        arr.remove(i)
+        for j in arr:
+            rr,cc = line(mc[i][0], mc[i][1], mc[j][0], mc[j][1])
+            ms = np.sum(mask[rr,cc]).astype(np.float)/len(rr)
+            if ms > 0.9:
+                 connections.append((i,j))
+
+
+    print "vertices: ", np.array(mc).astype(np.uint32)
+    print "connections: ", connections
+
+```
+
+Получим следующий результат:
+
+> vertices:  [[ 76 288]
+>  [ 76 613]
+>  [138 126]
+>  [139 450]
+>  [265 207]
+>  [264 369]
+>  [265 694]
+>  [265  45]
+>  [327 532]]
+>
+>
+> connections:  [(0, 4), (0, 5), (1, 6), (1, 8), (2, 4), (2, 7), (3, 5), (3, 8)]
+
+
+Ну и наконец, нарисуем картинку на основе полученных вершин и связей, чтобы убедиться в правильности работы алгоритма:
+
+```python
+
+    mask3 = np.zeros(mask2.shape, dtype=np.uint8)
+    mask3[:]=255
+
+    for p in mc:
+        rr, cc = circle(p[0], p[1], 5)
+        #mask3[p[0], p[1]]=255
+        mask3[rr,cc]=20
+
+    for cn in connections:
+        i, j = cn
+        rr,cc = line(mc[i][0], mc[i][1], mc[j][0], mc[j][1])
+        mask3[rr,cc]=12
+
+```
+
+![](https://github.com/vzaguskin/sampleprojects/blob/master/chart%20vectorisation/vectorized.jpg?raw=true)
+
+
+Полный исходный код примера [здесь](https://github.com/vzaguskin/sampleprojects/tree/master/chart%20vectorisation).
